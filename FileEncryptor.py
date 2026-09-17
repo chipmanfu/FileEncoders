@@ -8,7 +8,9 @@ def encrypt(infile, outfile):
     with open(infile, 'rb') as f:
         data = f.read()
     compressed = gzip.compress(data)
-    encoded = base64.b64encode(compressed)
+    key = b'thisisfine'
+    xored = bytes([compressed[i] ^ key[i % len(key)] for i in range(len(compressed))])
+    encoded = base64.b64encode(xored)
     hexed = encoded.hex()
     with open(outfile, 'w') as f:
         f.write(hexed)
@@ -17,7 +19,9 @@ def decrypt(infile, outfile):
     with open(infile, 'r') as f:
         hexed = f.read()
     encoded = bytes.fromhex(hexed)
-    compressed = base64.b64decode(encoded)
+    xored = base64.b64decode(encoded)
+    key = b'thisisfine'
+    compressed = bytes([xored[i] ^ key[i % len(key)] for i in range(len(xored))])
     decoded = gzip.decompress(compressed)
     with open(outfile, 'wb') as f:
         f.write(decoded)

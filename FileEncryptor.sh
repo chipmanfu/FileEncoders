@@ -35,9 +35,9 @@ if [ -z "$MODE" ] || [ -z "$INFILE" ] || [ -z "$OUTFILE" ]; then
 fi
 
 if [ "$MODE" = "encrypt" ]; then
-    xxd -p "$INFILE" | tr -d '\n' | base64 | gzip > "$OUTFILE"
+    gzip -c "$INFILE" | base64 | xxd -p | tr -d '\n' > "$OUTFILE"
 elif [ "$MODE" = "decrypt" ]; then
-    gunzip -c "$OUTFILE" | base64 -d | xxd -r -p > "$INFILE"
+    cat "$OUTFILE" | xxd -r -p | base64 -d | gunzip -c > "$INFILE"
 else
     echo "Error: Mode must be 'encrypt' or 'decrypt'"
     usage

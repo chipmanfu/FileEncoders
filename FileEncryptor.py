@@ -7,14 +7,16 @@ import sys
 def encrypt(infile, outfile):
     with open(infile, 'rb') as f:
         data = f.read()
-    encoded = base64.b64encode(data)
+    hexed = data.hex()
+    encoded = base64.b64encode(hexed.encode())
     with gzip.open(outfile, 'wb') as f:
         f.write(encoded)
 
 def decrypt(infile, outfile):
     with gzip.open(infile, 'rb') as f:
         encoded = f.read()
-    decoded = base64.b64decode(encoded)
+    hexed = base64.b64decode(encoded).decode()
+    decoded = bytes.fromhex(hexed)
     with open(outfile, 'wb') as f:
         f.write(decoded)
 

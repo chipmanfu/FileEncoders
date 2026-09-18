@@ -77,9 +77,10 @@ $outputBrowseBtn.Location = New-Object System.Drawing.Point(330, 208)
 $outputBrowseBtn.Size = New-Object System.Drawing.Size(80, 29)
 $outputBrowseBtn.Add_Click({
     $dlg = New-Object System.Windows.Forms.SaveFileDialog
-    $dlg.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+ #   $dlg.Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+    $dlg.Filter = "All Files (*.*)|*.*"
     if ($modeBox.SelectedItem -eq "Encode" -and -not [string]::IsNullOrEmpty($fileBrowser.Text)) {
-        $dlg.FileName = [System.IO.Path]::GetFileNameWithoutExtension($fileBrowser.Text) + ".out.txt"
+        $dlg.FileName = [System.IO.Path]::GetFileNameWithoutExtension($fileBrowser.Text) + ".txt"
     }
     if ($dlg.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
         $outputBox.Text = $dlg.FileName
